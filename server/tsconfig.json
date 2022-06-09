@@ -1,0 +1,17 @@
+{
+    "display": "hello world",
+    "compilerOptions": {
+        "lib": ["es2021"],
+        "module": "commonjs",
+        "target": "es2021",
+        "strict": true,
+        "outDir": "dist",
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "preserveConstEnums": true,
+        "sourceMap": true
+    },
+    "include": ["*", "controllers/AudioController.ts"],
+    "exclude": ["node_modules", "**/*.spec.ts"]
+}
