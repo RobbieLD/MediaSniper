@@ -1,29 +1,42 @@
 import express from 'express'
-import IController from './interfaces/IController'
-import Logger from './middleware/logger'
+import morgan from 'morgan'
+import expressWs from 'express-ws'
+import MediaRequest from './models/media-request'
+import MediaService from './services/media-service'
 
 export default class App {
-    public app: express.Application
-    public port: number
+    private app: express.Application
+    private socket: expressWs.Application
+    private port: number
+    private mediaService: MediaService
 
-    constructor(controllers: IController[], port: number) {
+    constructor(port: number) {
         this.app = express()
+        this.socket = expressWs(this.app).app
         this.port = port
-
-        this.initializeMiddlewares()
-        this.initializeControllers(controllers)
+        this.mediaService = new MediaService()
+        this.setup()
     }
 
-    private initializeMiddlewares() {
-        this.app.use(Logger.Log)
-    }
+    private setup() {
+        // Hook up the logging
+        this.app.use(morgan('tiny'))
 
-    private initializeControllers(controllers: IController[]) {
-        controllers.forEach((controller) => {
-            this.app.use('/api/', controller.router)
+        // expose the html public directory
+        this.app.use(express.static('public'))
+
+        // Hook up the ws endpoint
+        this.socket.ws('/', (ws) => {
+            ws.on('message', (msg) => {
+                const data: MediaRequest = JSON.parse(msg.toString())
+                this.mediaService.process(data, (res:string) => {
+                    ws.send(res)
+                })
+            })
         })
     }
 
+    // Make this logged properly
     public listen() {
         this.app.listen(this.port, () => {
             console.log(`App listening on the port ${this.port}`)

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset='utf-8'>
+        <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+        <title>File Processing</title>
+        <meta name='viewport' content='width=device-width, initial-scale=1'>
+    </head>
+
+    <body>
+        <div class="console" id="console"></div>
+
+        <script>
+            const log = (message) => {
+                const panel = document.getElementById('console')
+                const log = document.createElement('div')
+                log.className = 'log'
+                log.innerHTML = message
+                panel.appendChild(log)
+            }
+
+            const process = () => {
+
+                const params = (new URL(document.location)).searchParams;
+                const fileName = params.get("fileName")
+                const url = params.get("url")
+
+                log('Starting ...')
+                log(`FileName: ${fileName}`)
+                log(`Url: ${url}`)
+
+                // don't go any further if we don't have these two args
+                if (!url || !fileName) {
+                    return
+                }
+                
+                // Todo: make this secure
+                const socket = new WebSocket("ws://localhost:8080");
+
+                socket.onopen = () => {
+                    log('Connected to server')
+
+                    // Hook up the listener for the log
+                    socket.onmessage = (msg) => {
+                        log(msg.data)
+                    }
+
+                    // send the url to the server to get started
+                    socket.send(JSON.stringify({ fileName, url }))
+                }
+            }
+
+            process()
+
+        </script>
+
+        <style>
+            .console {
+                font-family: monospace;
+            }
+
+            .log {
+                margin-bottom: 0.5em;
+            }
+        </style>
+    </body>
+
+</html>
