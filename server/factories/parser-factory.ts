@@ -1,4 +1,4 @@
-import IParser from '../interfaces/IParser'
+import IParser from '../interfaces/iparser'
 import SgParser from '../services/sg-parser'
 import EchoParser from '../services/echo-parser'
 
@@ -7,7 +7,8 @@ export default class ParserFactory {
         if (url.includes('soundgasm')) {
             return new SgParser()
         }
-        else if (url.includes('echo')) {
+        // These are just used for testing
+        else if (url.includes('echo') || url.includes('nasa')) {
             return new EchoParser()
         }
         else {

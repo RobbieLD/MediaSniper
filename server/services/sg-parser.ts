@@ -1,4 +1,4 @@
-import IParser from '../interfaces/IParser'
+import IParser from '../interfaces/iparser'
 import axios from 'axios'
 
 export default class SgParser implements IParser {
