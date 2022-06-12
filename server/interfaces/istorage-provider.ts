@@ -1,3 +1,3 @@
 export default interface IStorageProvider {
-    save(progress: (msg: string) => void): Promise<void>
+    save(filePath: string, progress: (msg: string) => void): Promise<void>
 }

@@ -3,6 +3,7 @@ import MediaDownloader from '../services/media-downloader'
 import MediaRequest from '../models/media-request'
 import StorageFactory from '../factories/storage-factory'
 import MetadataProcessor from '../services/metadata-processor'
+import path from 'path'
 
 export default class MediaController {
     private downloader
@@ -16,20 +17,21 @@ export default class MediaController {
     }
 
     public async process(req: MediaRequest, progress: (r: string) => void) {
-        const mediaUrl = await this.getMediaUrl(req.url, progress)
-        progress(`Media url found: ${mediaUrl}`)
-        progress('Starting media download ...')
+        // const mediaUrl = await this.getMediaUrl(req.url, progress)
+        // progress(`Media url found: ${mediaUrl}`)
+        // progress('Starting media download ...')
         
-        const filePath = await this.downloadMedia(mediaUrl, progress)
-        progress(`Media download finished: ${filePath}`)
+        // const filePath = await this.downloadMedia(mediaUrl, progress)
+        // progress(`Media download finished: ${filePath}`)
         
-        progress(`Tagging media with metadata ${process.env?.STORAGE_META} and file name '${req.title}'`)
-        const result = await this.meta.writeMeta(req.title, filePath)
-        progress(`Tagging done with result: ${result || 'success'}`)
+        // progress(`Tagging media with metadata ${process.env?.STORAGE_META} and file name '${req.title}'`)
+        // const output = `"${path.dirname(filePath)}/${req.title}${path.extname(filePath)}"`
+        // const result = await this.meta.writeMeta(filePath, output)
+        // progress(`Tagging done with result: ${result || 'success'}`)
 
-        //progress(`Starting upload to ${this.storage.constructor.name}`)
-        //await this.storage.save(progress)
-        //progress('Processing complete')        
+        progress(`Starting upload to ${this.storage.constructor.name}`)
+        await this.storage.save('tmp/ZZZ test.m4a', progress)
+        progress('Processing complete')        
     }
 
     private async downloadMedia(url: string, progressCallback: (progress: string) => void): Promise<string> {
