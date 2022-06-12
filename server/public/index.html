@@ -23,18 +23,19 @@
             const process = () => {
 
                 const params = (new URL(document.location)).searchParams;
-                const fileName = params.get("fileName")
+                const title = params.get("title")
                 const url = params.get("url")
 
-                log('Starting ...')
-                log(`FileName: ${fileName}`)
-                log(`Url: ${url}`)
-
                 // don't go any further if we don't have these two args
-                if (!url || !fileName) {
+                if (!url || !title) {
+                    log('FileName and/or Url not supplied')
                     return
                 }
-                
+
+                log('Starting ...')
+                log(`title: ${title}`)
+                log(`Url: ${url}`)
+
                 // Todo: make this secure
                 const socket = new WebSocket("ws://localhost:8080");
 
@@ -47,7 +48,7 @@
                     }
 
                     // send the url to the server to get started
-                    socket.send(JSON.stringify({ fileName, url }))
+                    socket.send(JSON.stringify({ title, url }))
                 }
             }
 

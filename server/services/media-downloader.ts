@@ -16,7 +16,15 @@ export default class MediaDownloader {
         }
     }
 
-    public async downloadFile(url: string, fileName: string, progress: (per: string) => void) {
+    public async downloadFile(url: string, progress: (per: string) => void): Promise<string> {
+        
+        const filePath = `${this.downloadDir}/${path.basename(url)}`
+        
+        if (fs.existsSync(filePath)) {
+            progress('File already exists so skipping download')
+            return filePath
+        }
+
         const response = await axios.get(url, {
             responseType: 'stream'
         })
@@ -35,8 +43,7 @@ export default class MediaDownloader {
             }
         })
 
-        const ext = path.extname(url)
-
-        await this.pipeline(response.data, fs.createWriteStream(`tmp/${fileName}${ext}`))
+        await this.pipeline(response.data, fs.createWriteStream(filePath))
+        return filePath
     }
 }

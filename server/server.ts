@@ -2,19 +2,19 @@ import express from 'express'
 import morgan from 'morgan'
 import expressWs from 'express-ws'
 import MediaRequest from './models/media-request'
-import MediaService from './services/media-service'
+import MediaController from './controllers/media-controller'
 
 export default class App {
     private app: express.Application
     private socket: expressWs.Application
     private port: number
-    private mediaService: MediaService
+    private mediaService: MediaController
 
     constructor(port: number) {
         this.app = express()
         this.socket = expressWs(this.app).app
         this.port = port
-        this.mediaService = new MediaService()
+        this.mediaService = new MediaController()
         this.setup()
     }
 

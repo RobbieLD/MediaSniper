@@ -1,4 +1,4 @@
 export default interface MediaRequest {
-    fileName: string
+    title: string
     url: string
 }
