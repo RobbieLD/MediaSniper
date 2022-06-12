@@ -2,7 +2,7 @@ import ffmpeg from 'ffmpeg'
 import path from 'path'
 import fs from 'fs'
 
-export default class MetadataService {
+export default class MetadataProcessor {
     public async writeMeta(title: string, filePath: string): Promise<string> {
         const output = `"${path.dirname(filePath)}/${title}${path.extname(filePath)}"`
 

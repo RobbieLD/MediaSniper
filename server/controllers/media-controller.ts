@@ -2,7 +2,7 @@ import ParserFactory from '../factories/parser-factory'
 import MediaDownloader from '../services/media-downloader'
 import MediaRequest from '../models/media-request'
 import StorageFactory from '../factories/storage-factory'
-import MetadataService from '../services/metadata-service'
+import MetadataProcessor from '../services/metadata-processor'
 
 export default class MediaController {
     private downloader
@@ -12,7 +12,7 @@ export default class MediaController {
     constructor() {
         this.downloader = new MediaDownloader()
         this.storage = StorageFactory.getStorageProvider()
-        this.meta = new MetadataService()
+        this.meta = new MetadataProcessor()
     }
 
     public async process(req: MediaRequest, progress: (r: string) => void) {
